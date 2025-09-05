@@ -14,24 +14,6 @@ loki.source.syslog "mikrotik" {
 
 }
 
-loki.process "mikrotik" {
-        forward_to = [loki.write.default.receiver]
-        stage.regex {
-                expression = "^(?P<timestamp>\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+) (?P<host>\\S+) (?P<topics>[^ ]+) (?P<message>.*)$"
-        }
-
-        stage.labels{
-                values = {
-                        host    = "host",
-                        topics  = "topics",
-                }
-        }
-
-        stage.output {
-                source = "message"
-        }
-}
-
 loki.write "default" {
         endpoint {
                 url = "http://localhost:3100/loki/api/v1/push"
